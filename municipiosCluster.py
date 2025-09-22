@@ -314,7 +314,7 @@ try:
             df_para_exportar.to_excel(writer, sheet_name=nome_da_aba, index=False)
             print(f"-> Aba '{nome_da_aba}' com {len(df_para_exportar)} municípios criada.")
             
-    print(f"-> Relatório detalhado '{output_detalhado}' criado com sucesso.")
+    print(f"-> Relatório '{output_detalhado}' criado com sucesso.")
 except Exception as e:
     print(f"Ocorreu um erro ao salvar o arquivo Excel detalhado: {e}")
-print("\n--- SCRIPT CONCLUÍDO ---")
+print("\n--- FIM DO SCRIPT ---")
