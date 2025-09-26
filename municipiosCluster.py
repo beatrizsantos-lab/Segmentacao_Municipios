@@ -210,7 +210,7 @@ print(f"O K-Means isolou {len(municipios_outliers_kmeans)} municípios no cluste
 print(f"O DBSCAN identificou {(df_indicadores['cluster_dbscan'] == -1).sum()} municípios como ruído (-1).")
 print(f" -> {intersecao / len(municipios_outliers_kmeans):.1%} dos municípios do cluster 'Fora da Curva' são consistentes com os outliers do DBSCAN.")
 
-#%% >> Análise de Variância (ANOVA) com Pingouin
+#%% >> Análise de Variância (ANOVA)
 
 print("\n--- ANOVA para Validação dos Clusters K-Means ---")
 variaveis_anova = ['IFDM_2022', 'Rec_2022', 'Pop_Total', 'Desp_Edu_PC', 'Desp_SS_PC', 'Razao_Dependencia', 'Precariedade_San']
@@ -226,13 +226,13 @@ for var in variaveis_anova:
     # Adicionando ao dataframe de resultados
     resultados_anova_df = pd.concat([resultados_anova_df, resultado_var.to_frame().T], ignore_index=True)
 
-# Reorganizando as colunas e exibindo a tabela anova
+# Reorganizando as colunas e exibindo a tabela ANOVA
 resultados_anova_df = resultados_anova_df[['Variável', 'F', 'p-unc']]
 resultados_anova_df.rename(columns={'F': 'Estatística F', 'p-unc': 'Valor-p'}, inplace=True)
 resultados_anova_df['Significativo (p < 0,05)?'] = np.where(resultados_anova_df['Valor-p'] < 0.05, 'Sim', 'Não')
 print(resultados_anova_df.to_string(index=False))
 
-#%% >> Identificação das Características dos Clusters (Perfil)
+#%% >> Identificação das Características dos Clusters (Personas)
 
 caracteristicas_clusters = df_indicadores.groupby('cluster_kmeans')[features_selecionadas + ['IFDM_2022']]
 perfil_clusters = caracteristicas_clusters.describe().T
@@ -244,7 +244,7 @@ print(perfil_clusters)
 #xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 #%% >> Visualização dos Clusters com PCA
 
-# Redução de dimensionalidade com PCA para visualização 2D
+# Redução de dimensionalidade com PCA para visualização no gráfico
 pca = PCA(n_components=2)
 df_pca = pca.fit_transform(df_scaled)
 
@@ -267,7 +267,7 @@ plt.show()
 
 plt.figure(figsize=(10, 6))
 sns.boxplot(data=df_indicadores, x='cluster_kmeans', y='IFDM_2022', hue='cluster_kmeans', palette='viridis')
-#plt.title('Distribuição do IFDM por Cluster', fontsize=16, weight='bold')
+plt.title('Distribuição do IFDM por Cluster', fontsize=16, weight='bold')
 plt.xlabel('Cluster', fontsize=12)
 plt.ylabel('IFDM 2022', fontsize=12)
 plt.show()
