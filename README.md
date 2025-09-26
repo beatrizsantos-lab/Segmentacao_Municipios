@@ -43,6 +43,7 @@ A análise resultou na identificação de quatro perfis (personas) de município
 ├── Bases de Dados/           # 14 arquivos com dados do IBGE (dados de entrada) .xlsx
 ├── Dados Gerados/            # Relatórios gerados
 ├── .gitignore                # Arquivos/dirs a ignorar
+├── LICENSE                   # Licença MIT
 ├── README.md                 # Este arquivo
 └── municipiosCluster.py      # Script
 ```
@@ -54,8 +55,8 @@ A análise resultou na identificação de quatro perfis (personas) de município
 A análise foi conduzida como uma pesquisa documental e descritiva com abordagem quantitativa. O fluxo de trabalho implementado no script Python (`municipiosCluster.py`) segue as seguintes etapas:
 
 1. **Coleta e Consolidação de Dados:** Utilização de dados secundários de fontes públicas como IBGE, Ipeadata e Portal da Transparência, com foco no ano de **2022**. Os dados de múltiplos arquivos foram consolidados usando o código do município do IBGE como chave primária.
-- 14 planilhas **.xlsx**;  
-- Chave primária: **código do município (Cod)**.
+    - 14 planilhas **.xlsx**;  
+    - Chave primária: **código do município (Cod)**.
 
 2. **Engenharia de Atributos:** Criação de 18 indicadores-chave a partir dos dados brutos (ver a pasta Bases de Dados), divididos em quatro categorias: **Finanças, Demografia, Infraestrutura e Desigualdade**.
 
