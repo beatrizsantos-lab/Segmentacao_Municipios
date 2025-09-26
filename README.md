@@ -5,16 +5,15 @@ Análise de cluster para segmentar os municípios brasileiros com base em caract
 **Autora:** Beatriz Santos ([beatrizfsantos@usp.br](mailto:beatrizfsantos@usp.br))
 
 ---
-### Tabela de Conteúdos
-1. [Sobre o Projeto](#-sobre-o-projeto)
-2. [Resultados: As 4 Personas dos Municípios](#-resultados-as-4-personas-dos-municípios-brasileiros)
-3. [Estrutura do Repositório](#-estrutura-do-repositório)
-4. [Metodologia](#-metodologia)
-5. [Stack de Tecnologias](#-stack-de-tecnologias)
-6. [Como Executar o Projeto](#-como-executar-o-projeto)
-7. [Autora e Citação](#-autora-e-citação)
-8. [Licença](#-licença)
-
+### Sumário
+1. [Sobre o Projeto](#sobre-o-projeto)
+2. [Resultados: As 4 Personas dos Municípios](#resultados-as-4-personas-dos-municípios-brasileiros)
+3. [Estrutura do Repositório](#estrutura-do-repositório)
+4. [Metodologia](#metodologia)
+5. [Stack de Tecnologias](#stack-de-tecnologias)
+6. [Como Executar o Projeto](#como-executar-o-projeto)
+7. [Autora e Citação](#autoria-e-citação)
+8. [Licença](#licença)
 ---
 
 ## Sobre o Projeto
