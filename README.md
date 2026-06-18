@@ -1,154 +1,244 @@
-# Segmentação Socioeconômica de Municípios Brasileiros
+# Segmentação Socioeconômica de Municípios Brasileiros por Análise de Agrupamentos
 
-Análise de cluster para segmentar os municípios brasileiros com base em características socioeconômicas, visando orientar uma alocação de recursos mais assertiva e equitativa. Este repositório contém o código e a metodologia do Trabalho de Conclusão de Curso do MBA em Data Science & Analytics USP/ESALQ.
+Este repositório contém o código utilizado para realizar uma análise de agrupamentos dos municípios brasileiros, com base em indicadores fiscais, demográficos, infraestruturais e educacionais. O objetivo é construir uma tipologia empírica dos municípios, permitindo sintetizar a heterogeneidade territorial brasileira e subsidiar diagnósticos públicos mais sensíveis às diferenças locais.
 
-**Autora:** Beatriz Santos ([beatrizfsantos@usp.br](mailto:beatrizfsantos@usp.br))
+A análise foi desenvolvida originalmente como parte de um trabalho acadêmico no MBA em Data Science & Analytics da USP/ESALQ.
 
----
-### Sumário
-1. [Sobre o Projeto](#sobre-o-projeto)
-2. [Resultados: As 4 Personas dos Municípios](#resultados-as-4-personas-dos-municípios-brasileiros)
-3. [Estrutura do Repositório](#estrutura-do-repositório)
-4. [Metodologia](#metodologia)
-5. [Stack de Tecnologias](#stack-de-tecnologias)
-6. [Como Executar o Projeto](#como-executar-o-projeto)
-7. [Autora e Citação](#autoria-e-citação)
-8. [Licença](#licença)
----
+## Objetivo
 
-## Sobre o Projeto
+Aplicar técnicas de análise de agrupamentos para segmentar os municípios brasileiros em perfis socioeconômicos distintos, utilizando dados públicos referentes ao ano de 2022.
 
-A alocação eficiente de recursos públicos é um desafio central para a gestão governamental no Brasil, um país marcado por profundas disparidades regionais. A tomada de decisão baseada em evidências é fundamental para mitigar desigualdades e promover um desenvolvimento socioeconômico equilibrado. Este estudo visa responder a seguinte questão de pesquisa: **como técnicas de “clustering” podem ser aplicadas para otimizar a alocação de recursos públicos, considerando indicadores socioeconômicos extraídos de bases de dados abertas?**
-
-Utilizando técnicas de aprendizado de máquina não supervisionado, o trabalho segmenta 5.596 municípios brasileiros (Censo de 2022) em grupos com perfis socioeconômicos distintos, fornecendo uma ferramenta analítica para a formulação de políticas públicas direcionadas e mais eficazes.
-
----
-
-## Resultados: As 4 Personas dos Municípios Brasileiros
-
-A análise resultou na identificação de quatro perfis (personas) de municípios, estatisticamente distintos:
-
-- **Cluster 0 — Brasil Profundo (2.212 municípios):** Caracterizado por carências estruturais críticas, principalmente em saneamento básico, e com os menores níveis de investimento per capita em áreas como saúde e educação.
-- **Cluster 1 — Fora da Curva (16 municípios):**  Um grupo anômalo com características financeiras atípicas, possivelmente devido a inconsistências nos dados declarados, que requerem análise individualizada.
-- **Cluster 2 — Estruturados (2.546 municípios):** Representam o perfil mais equilibrado e com os indicadores de infraestrutura e desenvolvimento mais positivos, como os menores índices de precariedade sanitária e a mediana de IFDM mais elevada.
-- **Cluster 3 — Investidores (822 municípios):**  Municípios com alta capacidade de investimento e os maiores gastos per capita em saúde e educação. No entanto, o alto investimento nem sempre se traduz em infraestrutura de qualidade, sugerindo possíveis ineficiências de gestão.
-
----
-
-## Estrutura do Repositório
-
-```
-.
-├── Bases de Dados/           # 14 arquivos com dados do IBGE (dados de entrada) .xlsx
-├── Dados Gerados/            # Relatórios gerados
-├── .gitignore                # Arquivos/dirs a ignorar
-├── LICENSE                   # Licença MIT
-├── README.md                 # Este arquivo
-└── municipiosCluster.py      # Script
-```
-
----
+A proposta não é definir uma alocação ótima de recursos públicos, mas fornecer subsídios para diagnósticos territoriais e para reflexões sobre políticas públicas baseadas em evidências.
 
 ## Metodologia
 
-A análise foi conduzida como uma pesquisa documental e descritiva com abordagem quantitativa. O fluxo de trabalho implementado no script Python (`municipiosCluster.py`) segue as seguintes etapas:
+A metodologia utiliza o algoritmo **K-Means** como técnica principal de agrupamento. O número de clusters foi definido com base na análise conjunta de:
 
-1. **Coleta e Consolidação de Dados:** Utilização de dados secundários de fontes públicas como IBGE, Ipeadata e Portal da Transparência, com foco no ano de **2022**. Os dados de múltiplos arquivos foram consolidados usando o código do município do IBGE como chave primária.
-    - 14 planilhas **.xlsx**;  
-    - Chave primária: **código do município (Cod)**.
+- método do cotovelo;
+- coeficiente médio de silhueta;
+- métricas auxiliares de validação interna;
+- tamanho dos agrupamentos;
+- interpretabilidade substantiva dos perfis formados.
 
-2. **Engenharia de Atributos:** Criação de 18 indicadores-chave a partir dos dados brutos (ver a pasta Bases de Dados), divididos em quatro categorias: **Finanças, Demografia, Infraestrutura e Desigualdade**.
+Além do K-Means, foram utilizadas análises complementares:
 
-3. **Pré-processamento:** Padronização dos 18 indicadores utilizando a técnica Z-score (`StandardScaler`) para garantir que todas as variáveis tivessem a mesma contribuição na modelagem. 
-- Seleção de **k** via **Método do Cotovelo** e **Silhueta**.
+- **DBSCAN**, para verificar a presença de observações atípicas;
+- **ANOVA**, para avaliar se os agrupamentos apresentam diferenças estatisticamente significativas em relação aos principais indicadores;
+- **PCA**, para visualização bidimensional dos agrupamentos.
 
-4. **Modelagem e Validação:**
-    - Aplicação do algoritmo **K-Means** para agrupar os municípios. O número de clusters foi definido como K=4 com base no Método do Cotovelo, Análise de Silhueta e, de forma decisiva, na interpretabilidade dos grupos gerados.
-    - A lógica do algoritmo **DBSCAN** foi utilizada para interpretar o cluster de outliers identificado pelo K-Means (“Fora da Curva”).
-    - A robustez da segmentação foi validada pela **Análise de Variância (ANOVA)**, que confirmou que os clusters eram estatisticamente distintos entre si (p < 0,05).
-    - A **Análise de Componentes Principais (PCA)** foi empregada para visualizar os clusters em um gráfico 2D.
+## Indicadores utilizados
 
----
+A análise considera 18 indicadores construídos a partir das bases municipais.
 
-## Stack de Tecnologias
+### Indicadores de despesa pública per capita
 
-- **Análise de Dados:** `pandas`, `numpy`  
-- **Machine Learning:** `scikit-learn`, `scipy`  
-- **Análise Estatística:** `pingouin`  
-- **Visualização:** `matplotlib`, `seaborn`, `plotly`  
-- **Arquivos:** `os`, `openpyxl`
+- Despesa em Assistência Social e Previdência per capita;
+- Despesa em Educação e Cultura per capita;
+- Despesa em Gestão Ambiental, Agricultura e Organização Agrária per capita;
+- Despesa em Saúde e Saneamento per capita;
+- Despesa em Segurança Pública e Previdência per capita;
+- Despesa em Urbanismo e Habitação per capita.
 
----
+### Indicadores de prioridade orçamentária relativa
 
-## Como Executar o Projeto
+- Prioridade relativa em Assistência Social e Previdência;
+- Prioridade relativa em Educação e Cultura;
+- Prioridade relativa em Gestão Ambiental, Agricultura e Organização Agrária;
+- Prioridade relativa em Saúde e Saneamento;
+- Prioridade relativa em Segurança Pública e Previdência;
+- Prioridade relativa em Urbanismo e Habitação.
 
-### 1) Pré-requisitos
-- **Python 3.8+**  
-- **Git**
+Esses indicadores são calculados pela razão entre a despesa empenhada na função e a receita orçamentária bruta municipal.
 
-### 2) Instalação
+### Indicadores demográficos
+
+- Razão de dependência;
+- Índice de envelhecimento.
+
+### Indicadores de infraestrutura
+
+- Índice de precariedade sanitária;
+- Índice de precariedade na destinação do lixo.
+
+### Indicadores de desigualdade educacional
+
+- Gap de alfabetização racial;
+- Gap de alfabetização geracional.
+
+## Bases de dados
+
+O script utiliza arquivos em formato `.xlsx`, armazenados localmente na pasta `Bases de Dados`.
+
+Arquivos esperados:
+
+```text
+Bases de Dados/
+├── Alfabetizacao2022.xlsx
+├── Despesa_AssistSocial_Prev.xlsx
+├── Despesa_Edu_Cult.xlsx
+├── Despesa_GestaoAmbAgric_Org.xlsx
+├── Despesa_Sau_Sanea.xlsx
+├── Despesa_SegPub_Prev.xlsx
+├── Despesa_Urban_Hab.xlsx
+├── Ifdm.xlsx
+├── Lixo2022.xlsx
+├── PopulacaoPorCor2022.xlsx
+├── PopulacaoPorIdade2022.xlsx
+├── PopulacaoTotal.xlsx
+├── ReceitaOrcBruta.xlsx
+└── Saneamento2022.xlsx
+```
+
+A base `PopulacaoTotal.xlsx` é utilizada como base-mestra para consolidação dos municípios.
+
+## Estrutura sugerida do projeto
+
+```text
+Cluster_Municipios/
+├── Bases de Dados/
+│   └── arquivos .xlsx utilizados na análise
+├── Resultados/
+│   └── arquivos gerados pelo script
+├── municipiosClusterV6_1_github.py
+├── requirements_cluster_municipios.txt
+└── README.md
+```
+
+## Como executar
+
+1. Clone o repositório:
 
 ```bash
-# Clone o repositório
-git clone https://github.com/seu-usuario/seu-repositorio.git
-cd seu-repositorio
-
-# Crie e ative um ambiente virtual
-python -m venv venv
-# Windows:
-# venv\Scripts\activate
-# macOS/Linux:
-# source venv/bin/activate
-
-# Instale as dependências
-pip install -r requirements.txt
+git clone https://github.com/SEU-USUARIO/NOME-DO-REPOSITORIO.git
 ```
 
-### 3) Configuração dos Dados
+2. Acesse a pasta do projeto:
 
-1. Crie a pasta **Clustering** na raiz.  
-2. Coloque dentro dela os **14 arquivos .xlsx** de dados brutos.  
-3. Ajuste o caminho de dados no início de `municipiosCluster.py` para um **caminho relativo**:
-
-```python
-# Altere de:
-# caminho_pasta = r'C:\Users\beatr\OneDrive\...'
-# Para:
-caminho_pasta = 'Clustering'
+```bash
+cd NOME-DO-REPOSITORIO
 ```
 
-### 4) Execução
+3. Crie um ambiente virtual, se desejar:
 
-- O script é sequencial e organizado em **células (#%%)**.  
-- Utilizou-se o **VS Code (modo interativo)**.  
-- Rode as células em ordem; os gráficos aparecerão na área de plotagem e os relatórios serão salvos na raiz.
+```bash
+python -m venv .venv
+```
 
----
+4. Ative o ambiente virtual.
 
-## Saídas (Outputs)
+No Windows:
 
-Serão gerados:
+```bash
+.venv\Scripts\activate
+```
 
-- **`relatorio_clusters_com_indicadores.xlsx`**  
-  - Todos os municípios, indicadores e cluster atribuído.  
-  - Aba extra com **centroides** detalhados de cada cluster.
+No Linux/Mac:
 
-- **`municipios_por_cluster.xlsx`**  
-  - Uma aba por cluster, listando municípios e principais indicadores, **ordenados por IFDM**.
+```bash
+source .venv/bin/activate
+```
 
----
+5. Instale as dependências:
 
-## Autoria e Citação
+```bash
+pip install -r requirements_cluster_municipios.txt
+```
 
-**Autora:** Beatriz Santos  
-**Contato:** beatrizfsantos@usp.br
+6. Certifique-se de que os arquivos `.xlsx` estão dentro da pasta `Bases de Dados`.
 
-**Citação sugerida:** (sujeita a alterações)
+7. Execute o script:
 
-> SANTOS, B. F. S.; THEODORO, R. *Segmentação Socioeconômica de Municípios para Alocação Eficiente de Recursos*. Trabalho de Conclusão de Curso (MBA em Data Science & Analytics) — USP/ESALQ, 2025.
+```bash
+python municipiosCluster.py
+```
 
----
+## Principais saídas geradas
+
+O script cria uma pasta `Resultados`, onde são salvos os arquivos gerados pela análise.
+
+Entre as principais saídas, estão:
+
+```text
+Resultados/
+├── grafico_elbow_kmeans.png
+├── grafico_silhueta_kmeans_k3_k10.png
+├── grafico_pca_clusters.png
+├── grafico_boxplot_ifdm.png
+├── tabela_medias_indicadores_por_cluster.xlsx
+├── relatorio_clusters_com_indicadores.xlsx
+├── municipios_por_cluster.xlsx
+├── classificacao_municipios_qgis.csv
+├── comparacao_clusters_k4_k5.xlsx
+├── municipios_cluster_4_k5.xlsx
+├── municipios_cluster_4_k5_detalhado.xlsx
+└── municipios_migraram_brasil_profundo_para_alto_desempenho.xlsx
+```
+
+O arquivo `classificacao_municipios_qgis.csv` pode ser utilizado para integração com malhas municipais no QGIS, por meio do código municipal do IBGE.
+
+## Observação sobre os nomes dos clusters
+
+O código mantém os agrupamentos identificados pelo K-Means como rótulos numéricos, por exemplo:
+
+```text
+Cluster 0
+Cluster 1
+Cluster 2
+Cluster 3
+```
+
+A nomeação substantiva dos perfis deve ser feita apenas na etapa de interpretação dos resultados, pois pode variar conforme a base de dados, os indicadores utilizados e a solução de agrupamento escolhida.
+
+No estudo original, os agrupamentos foram interpretados como perfis municipais distintos, mas esses nomes não são fixados no código para preservar a reprodutibilidade e a flexibilidade metodológica.
+
+## Validação complementar
+
+### DBSCAN
+
+O DBSCAN é utilizado apenas como validação complementar para identificar observações atípicas. Ele não define a tipologia final dos municípios.
+
+No script, o parâmetro `eps` define o raio de vizinhança no espaço das variáveis padronizadas, enquanto `min_samples` é calculado em função do número de indicadores utilizados.
+
+### ANOVA
+
+A ANOVA é utilizada para verificar se os clusters apresentam diferenças estatisticamente significativas em relação a indicadores selecionados, como IFDM, receita orçamentária, população, despesas per capita e precariedade sanitária.
+
+## Reprodutibilidade
+
+Para garantir maior consistência dos resultados, o algoritmo K-Means utiliza `random_state = 42` e `n_init = 50`.
+
+As variáveis são previamente imputadas pela média e padronizadas por meio do `StandardScaler`, de modo que todas as etapas do K-Means utilizem a mesma base transformada.
+
+## Limitações
+
+A análise utiliza dados referentes ao ano de 2022, portanto representa um retrato específico do período analisado. O método tem caráter descritivo e exploratório, não permitindo estabelecer relações causais entre gasto público e desempenho socioeconômico.
+
+Além disso, os resultados dependem da qualidade, disponibilidade e compatibilidade das bases públicas utilizadas.
+
+## Possíveis extensões
+
+Trabalhos futuros podem ampliar a análise por meio de:
+
+- dados em painel;
+- comparação da evolução dos municípios ao longo do tempo;
+- incorporação de indicadores de saúde, educação, violência, conectividade digital e capacidade administrativa;
+- aplicação de métodos de eficiência;
+- uso de econometria espacial;
+- modelos preditivos para investigar fatores associados à mudança de perfil municipal.
+
+## Autoria
+
+Beatriz Santos  
+Mestranda em Economia Aplicada  
+MBA em Data Science & Analytics — USP/ESALQ
+Contato: beatrizfsantos@usp.br / beatriz.santos@feac.ufal.br
+
+## Citação
+
+Sugestão (sujeita a alterações):
+
+SANTOS, B.F. S.; THEODORO, R. Segmentação socioeconômica de municípios brasileiros por análise de agrupamentos. Repositório de código e resultados complementares, 2026. Disponível em: <link do repositório>. Acesso em: dia mês ano.
 
 ## Licença
 
-Este projeto é distribuído sob a **licença MIT**. Consulte o arquivo `LICENSE` para detalhes.
+Este projeto pode ser disponibilizado sob licença MIT, caso não haja restrições associadas às bases de dados utilizadas.
