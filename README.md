@@ -229,7 +229,7 @@ Trabalhos futuros podem ampliar a análise por meio de:
 ## Autoria
 
 Beatriz Santos  
-Mestranda em Economia Aplicada (PPGE/UFAL)
+Mestranda em Economia Aplicada (PPGE/UFAL)  
 MBA em Data Science & Analytics (USP/ESALQ)
 
 Contato: beatrizfsantos@usp.br / beatriz.santos@feac.ufal.br
