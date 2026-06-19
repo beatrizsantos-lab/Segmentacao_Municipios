@@ -231,6 +231,7 @@ Trabalhos futuros podem ampliar a análise por meio de:
 Beatriz Santos  
 Mestranda em Economia Aplicada (PPGE/UFAL)
 MBA em Data Science & Analytics (USP/ESALQ)
+
 Contato: beatrizfsantos@usp.br / beatriz.santos@feac.ufal.br
 
 ## Citação
