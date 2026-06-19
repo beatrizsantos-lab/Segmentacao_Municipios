@@ -242,4 +242,4 @@ SANTOS, B.F. S.; THEODORO, R. Segmentação socioeconômica de municípios brasi
 
 ## Licença
 
-Este projeto pode ser disponibilizado sob licença MIT, caso não haja restrições associadas às bases de dados utilizadas.
+Este projeto está licenciado sob a licença MIT - consulte o arquivo [LICENSE](LICENSE)
